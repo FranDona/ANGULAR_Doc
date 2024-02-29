@@ -12,7 +12,7 @@
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [¿Qué es Angular?](#qué-es-angular)
   - [Instalacion Angular CLI](#instalacion-angular-cli)
-  - [Creación de proyectos y sincronizarlos](#creación-de-proyectos-y-sincronizarlos)
+  - [Creación de un proyecto](#creación-de-un-proyecto)
 
 
 
@@ -37,7 +37,7 @@ ng version
 >[!NOTE]
 > Angular no se instala globalmente en nuestro equipo, se instala individualmente en las carpetas que queramos
 
-## Creación de proyectos y sincronizarlos
+## Creación de un proyecto
 
 1. Creacion de las carpetas
 ```bash
