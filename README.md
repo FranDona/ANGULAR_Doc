@@ -11,16 +11,18 @@
 - [ANGULAR\_Doc](#angular_doc)
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [¿Qué es Angular?](#qué-es-angular)
-  - [Instalacion Angular CLI](#instalacion-angular-cli)
+    - [Instalación Angular CLI](#instalación-angular-cli)
   - [Creación de un proyecto](#creación-de-un-proyecto)
-  - [Instalacion Angular Material](#instalacion-angular-material)
+  - [Instalación bibliotecas](#instalación-bibliotecas)
+    - [Instalación Bootstrap5](#instalación-bootstrap5)
+    - [Instalación Angular Material](#instalación-angular-material)
 
 
 
 ## ¿Qué es Angular?
 Angular es un framework de desarrollo front-end utilizado que se usa junto a TypeScript para crear aplicaciones web de una sola página (SPA) y aplicaciones web progresivas (PWA). Se utiliza para construir interfaces de usuario interactivas y dinámicas. Angular utiliza el patrón Modelo-Vista-Controlador (MVC) para organizar y gestionar la estructura de las aplicaciones.
 
-## Instalacion Angular CLI
+### Instalación Angular CLI
 >[!WARNING]
 > Para poder instalar Angular necesitaremos tener instalado NPM en nuestro sistema
 
@@ -28,9 +30,9 @@ Angular es un framework de desarrollo front-end utilizado que se usa junto a Typ
 > En nuestro caso usaremos Angular 16.2.0
 
 ```bash
-#Instalacion del cliente
+#Instalación del cliente
 sudo npm install -g @angular/cli
-#Para comprobar la version
+#Para comprobar la versión
 ng version
 ```
 
@@ -64,7 +66,29 @@ ng serve --open
 >[!NOTE]
 Esto nos dejara la consola ocupada mientras estemos trabajando con angular, para cerrar CTR + C
 
-## Instalacion Angular Material
+
+## Instalación bibliotecas
+
+### Instalación Bootstrap5
+
+Para comenzar la instalación de la biblioteca nos dirigiremos a la raiz de proyecto e instalamos:
+```bash
+npm install bootstrap@5
+```
+Nos dirigiremos a 
+
+```json
+"styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
+```
+
+### Instalación Angular Material
 Comenzamos instalando la dependencia estando en la carpeta raiz de nuestro proyecto Angular
 ```bash
 ng add @angular/material
@@ -73,6 +97,18 @@ Ahora podremos añadir los modulos que necesitemos a nuestro app.modules para po
 
 Haremos un ejemplo con `MatSnackBar` usado para mostrar notificaciones 
 emergentes personalizados en la pantalla
+
+Nos dirigimos al archivo angular.json en la raíz de nuestro proyecto para agregar angular material:
+
+```json
+"styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css"
+            ]
+```
+
+
+Dentro de nuestro componente:
 
 ```typescript
 // Añadimos la importación arriba del documentos
