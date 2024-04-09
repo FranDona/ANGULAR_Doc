@@ -13,6 +13,7 @@
   - [¿Qué es Angular?](#qué-es-angular)
   - [Instalacion Angular CLI](#instalacion-angular-cli)
   - [Creación de un proyecto](#creación-de-un-proyecto)
+  - [Instalacion Angular Material](#instalacion-angular-material)
 
 
 
@@ -63,4 +64,30 @@ ng serve --open
 >[!NOTE]
 Esto nos dejara la consola ocupada mientras estemos trabajando con angular, para cerrar CTR + C
 
+## Instalacion Angular Material
+Comenzamos instalando la dependencia estando en la carpeta raiz de nuestro proyecto Angular
+```bash
+ng add @angular/material
+```
+Ahora podremos añadir los modulos que necesitemos a nuestro app.modules para podes usar lo que necesitemos
 
+Haremos un ejemplo con `MatSnackBar` usado para mostrar notificaciones 
+emergentes personalizados en la pantalla
+
+```typescript
+// Añadimos la importación arriba del documentos
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+// Lo inyectamos en el constructor
+constructor(private snackBar: MatSnackBar) {}
+
+// Agregamos el mensaje al la funciona que deseemos
+this.snackBar.open('Cuerpo del mensaje', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
+```
+
+>[!TIP]
+Para más información puedes ver la [Documentación Oficial ](https://material.angular.io)
