@@ -75,7 +75,7 @@ Para comenzar la instalación de la biblioteca nos dirigiremos a la raiz de proy
 ```bash
 npm install bootstrap@5
 ```
-Nos dirigiremos a 
+Nos dirigiremos a angular.json y añadimos las sigueintes lineas para que bootstrap funcione
 
 ```json
 "styles": [
