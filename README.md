@@ -11,8 +11,14 @@
 - [ANGULAR\_Doc](#angular_doc)
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [¿Qué es Angular?](#qué-es-angular)
-    - [Instalación Angular CLI](#instalación-angular-cli)
+  - [Instalación Angular CLI](#instalación-angular-cli)
   - [Creación de un proyecto](#creación-de-un-proyecto)
+  - [Estructura del Proyecto](#estructura-del-proyecto)
+    - [Enviroments](#enviroments)
+    - [Models](#models)
+    - [Services](#services)
+    - [Components](#components)
+    - [Tablas relacionadas](#tablas-relacionadas)
   - [Instalación bibliotecas](#instalación-bibliotecas)
     - [Instalación Bootstrap5](#instalación-bootstrap5)
     - [Instalación Angular Material](#instalación-angular-material)
@@ -22,7 +28,7 @@
 ## ¿Qué es Angular?
 Angular es un framework de desarrollo front-end utilizado que se usa junto a TypeScript para crear aplicaciones web de una sola página (SPA) y aplicaciones web progresivas (PWA). Se utiliza para construir interfaces de usuario interactivas y dinámicas. Angular utiliza el patrón Modelo-Vista-Controlador (MVC) para organizar y gestionar la estructura de las aplicaciones.
 
-### Instalación Angular CLI
+## Instalación Angular CLI
 >[!WARNING]
 > Para poder instalar Angular necesitaremos tener instalado NPM en nuestro sistema
 
@@ -66,6 +72,156 @@ ng serve --open
 >[!NOTE]
 Esto nos dejara la consola ocupada mientras estemos trabajando con angular, para cerrar CTR + C
 
+## Estructura del Proyecto
+
+### Enviroments
+
+Comando: ng generate environments
+En el cual guardaremos la URL de nuestro servicio backend
+
+```typescript
+// enviroment.developments.ts
+export const environment = {
+    apiURL : "http://localhost:8101"
+};
+```
+
+
+
+### Models
+
+Comando: ng generate class models/nombreEntidad --type=model
+En el cual guardaremos un modelo con la configuración que usa la bbdd sobre la entidad
+
+```typescript
+export interface Tipos {
+    id: number;
+    materia: string;
+    borrado: boolean;
+}
+```
+>[!NOTE]
+Importante crear el modelo como una interfaz
+
+### Services
+
+Comando: ng generate service services/nombreEntidad
+En el cual guardaremos los servicios necesarios para conectar los endpoint del backend con el frontend(Angular)
+
+```typescript
+// Atributo con la raiz de los endpoints
+private baseURL = `${environment.apiURL}/tipos_expediente`;
+
+// En el constructor inyecto el HttpClient para gestionar endpoints
+constructor(private http: HttpClient) {}
+
+// Insertar tipos
+// @PostMapping("/insertar/{materia}")
+insertarTipo(materia: string): Observable<Tipos> {
+  const url = `${this.baseURL}/insertar/${materia}`;
+  return this.http.post<Tipos>(url, {}); // {} body, siempre vacio
+}
+
+// Resto de servicios....
+```
+
+### Components
+
+Comando: ng generate component nombreComponente
+En el componente tendremos dos archivos:
+- Archivo Component: Usado para crear todas las funciones que manejaremos en la página relacionado con ese componente.
+- Archivo HTML: En donde definiremos la estructura de como vemos la página.
+
+```typescript
+export class FormulariosTiposComponent implements OnInit {
+  tipos: Tipos[] = [];
+  mensaje: string = "";
+  materia: string = "";
+constructor(private servicio: TiposService)
+
+  ngOnInit(): void {
+    this.cargarTipos();
+  } 
+
+cargarTipos(): void {
+  this.servicio.consultarTipos().subscribe(datos => {
+    this.tipos = datos;
+    this.filtrarTipos();
+  });
+  }
+
+insertarTipo(): void {
+  this.servicio.insertarTipo(this.materia).subscribe(
+    resultado => {
+      if (resultado) {
+        this.mensaje = "Tipo insertado";
+        this.cargarTipos();
+        }
+      }
+    );
+  }
+
+}
+```
+
+Este seria el resultado final que vería el usuario
+```html
+<!-- Formulario para insertar nuevos tipos -->
+<form (ngSubmit)="insertarTipo()">
+    <section class="mb-3">
+        <label for="materia" class="form-label">Materia</label>
+        <input placeholder="Introducir Materia" type="text" class="form-control" id="materia" [(ngModel)]="materia" name="materia">
+    </section>
+    <!-- Botón para insertar un nuevo documento -->
+    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Insertar</button>
+</form>
+
+<!-- Tabla para mostrar los datos -->
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Materia</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tipo of tiposFiltrados">
+      <td>{{ tipo.id }}</td>
+      <td>{{ tipo.materia }}</td>
+      <td>
+        <button (click)="prepararActualizacion(tipo)"></button>
+        <button class="btn btn-danger btn-sm" (click)="borradoLogicoTipo(tipo.id)"></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+```
+
+
+### Tablas relacionadas
+```typescript
+export interface Tipos {
+    id: number;
+    materia: string;
+    borrado: boolean;
+}
+```
+
+----------
+
+```typescript
+import { Tipos } from "../../tipos-expediente/models/tipos.model";
+
+export interface Expedientes {
+  id: number;
+  codigo: string;
+  fecha: string;
+  descripcion: string;
+  tipo: Tipos; 
+  borrado: boolean;
+}
+```
 
 ## Instalación bibliotecas
 
