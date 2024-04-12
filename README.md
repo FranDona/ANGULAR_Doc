@@ -77,6 +77,7 @@ Esto nos dejara la consola ocupada mientras estemos trabajando con angular, para
 ### Enviroments
 
 Comando: ng generate environments
+
 En el cual guardaremos la URL de nuestro servicio backend
 
 ```typescript
@@ -91,6 +92,7 @@ export const environment = {
 ### Models
 
 Comando: ng generate class models/nombreEntidad --type=model
+
 En el cual guardaremos un modelo con la configuración que usa la bbdd sobre la entidad
 
 ```typescript
@@ -106,6 +108,7 @@ Importante crear el modelo como una interfaz
 ### Services
 
 Comando: ng generate service services/nombreEntidad
+
 En el cual guardaremos los servicios necesarios para conectar los endpoint del backend con el frontend(Angular)
 
 ```typescript
@@ -128,6 +131,7 @@ insertarTipo(materia: string): Observable<Tipos> {
 ### Components
 
 Comando: ng generate component nombreComponente
+
 En el componente tendremos dos archivos:
 - Archivo Component: Usado para crear todas las funciones que manejaremos en la página relacionado con ese componente.
 - Archivo HTML: En donde definiremos la estructura de como vemos la página.
@@ -200,30 +204,71 @@ Este seria el resultado final que vería el usuario
 
 
 ### Tablas relacionadas
-```typescript
-export interface Tipos {
-    id: number;
-    materia: string;
-    borrado: boolean;
-}
-```
 
-----------
+1. En la entidad "Tipos" crearemos las materias:
+    ```typescript
+    export interface Tipos {
+        id: number;
+        materia: string;
+        borrado: boolean;
+    }
+    ```
 
-```typescript
-import { Tipos } from "../../tipos-expediente/models/tipos.model";
+2. En la entidad Expedientes, en el campo "tipo" nuestra intención es añadir un materia al expediente, por lo que importaremos la entidad al modelo y pondremos el nombre de la entidad en el campo
+    ```typescript
+    // Importamos la entidad Tipos
+    import { Tipos } from "../../tipos-expediente/models/tipos.model";
 
-export interface Expedientes {
-  id: number;
-  codigo: string;
-  fecha: string;
-  descripcion: string;
-  tipo: Tipos; 
-  borrado: boolean;
-}
-```
+    export interface Expedientes {
+      id: number;
+      codigo: string;
+      fecha: string;
+      descripcion: string;
+      tipo: Tipos; // Ponemos el nombre de la entidad que queremos mostrar
+      borrado: boolean;
+    }
+    ```
+
+3. En el componente también tendremos que agregar las dos entidades 
+    ```typescript
+    import { Expedientes } from '../models/expedientes.model';
+    import { Tipos } from '../../tipos-expediente/models/tipos.model';
+
+    export class FormulariosExpedientesComponent implements OnInit {
+      expedientes: Expedientes[] = [];
+      tipos: Tipos[] = [];
+
+    ngOnInit(): void {
+      this.cargarExpedientes();
+      this.cargarTipos();
+    }
+
+      cargarExpedientes(): void {
+        this.servicio.consultarExpedientes().subscribe(datos => {
+          this.expedientes = datos;
+        });
+      }
+
+      cargarTipos(): void {
+        this.servicio.consultarTipos().subscribe(tipos => {
+          this.tipos = tipos;
+        });
+      }
+    }
+    ```
+
+1. Ahora en la vista podremos añadir a las tablas los datos de las dos entidades de la siguiente manera
+
+    ```html
+    // Para mostrar los datos en una tabla:
+    <td>{{ expediente.codigo }}</td>
+    <td>{{ expediente.tipo.materia }}</td>
+    ```
+
 
 ## Instalación bibliotecas
+
+Las bibliotecas en Angular permiten reutilizar y compartir código entre diferentes proyectos, facilitando el desarrollo y mantenimiento de aplicaciones.
 
 ### Instalación Bootstrap5
 
